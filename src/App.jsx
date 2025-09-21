@@ -1,16 +1,52 @@
-//controlled component example using input field (is a form whose input field value is controlled by react state)
-import { useState } from "react"
+//radiobutton and dropdown
+import Radio from "./Radio";
 function App(){
-
   return(
-    <div></div>
+    <div>
+      <h1>Handle Radio and Dropdown</h1>
+      <Radio />
+    </div>
   )
 }
-export default App
+export default App;
 
+/*to handle checkbox
+import Checkboxes from "./CheckBoxes";
+function App(){
+  return(
+    <div>
+      <h1> Handle Checkbox </h1>
+      <Checkboxes />
+    </div>
+  )
+}
+export default App;*/
 
-/*import { useState } from "react"
+/*controlled component example using input field (is a form whose input field value is controlled by react state)
+import { useState } from "react"
+function App(){
+const [name, setName]=useState('');
+const [password, setPassword]=useState('');
+const [email, setEmail]=useState('');
+  return(
+    <div>
+      <h1>Controller Component</h1>
 
+        <input type="text" value={name} onChange={(event)=>setName(event.target.value)} placeholder="Enter Name"/><br /><br />
+        <input type="password" value={password}  onChange={(event)=>setPassword(event.target.value)} placeholder="Enter Password"/><br /><br />
+        <input type="text" value={email}  onChange={(event)=>setEmail(event.target.value)} placeholder="Enter Email"/><br /><br />
+        <button>Submit</button>
+        <button onClick={()=>{setEmail('');setPassword('');setName('')}}>Clear</button>
+        <h3>{name}</h3>
+        <h3>{password}</h3>
+        <h3>{email}</h3>
+    </div>
+  )
+}
+export default App*/
+    
+/*the use of onChange event to clear the values
+import { useState } from "react"
 function App(){
   const [val, setVal]=useState("");
   return( 
@@ -28,6 +64,7 @@ function App(){
 } 
 export default App*/
 
+//props types
 //import User from "./User"
 //import Wrapper from "./Wrapper"
 
