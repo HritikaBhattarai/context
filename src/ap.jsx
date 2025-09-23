@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { API_URL, API_KEY } from "../config";
+import { API_URL, API_KEY } from "../cofig.js";
 
 // images
 import searchIcon from "../assets/search.png";
@@ -17,9 +17,18 @@ function Home() {
   const [error, setError] = useState("");
 
   const checkWeather = async () => {
-    if (!city) return;
+    if (!city.trim()) {
+      setError("Please enter a city name");
+      setWeather(null);
+      return;
+    }
+    setError("");
+
     try {
-      const response = await fetch(`${API_URL}${city}&appid=${API_KEY}`);
+      const response = await fetch(
+        `${API_URL}${city.trim()}&appid=${API_KEY}&units=metric`
+      );
+
       if (response.status === 404) {
         setError("Invalid city name");
         setWeather(null);
@@ -27,6 +36,13 @@ function Home() {
       }
 
       const data = await response.json();
+
+      if (!data || !data.main || !data.weather || data.weather.length === 0) {
+        setError("Weather data not available");
+        setWeather(null);
+        return;
+      }
+
       setWeather({
         name: data.name,
         temp: Math.round(data.main.temp),
@@ -34,8 +50,8 @@ function Home() {
         wind: data.wind.speed,
         main: data.weather[0].main,
       });
-      setError("");
-    } catch {
+    } catch (err) {
+      console.error("Fetch error:", err);
       setError("Something went wrong!");
       setWeather(null);
     }
@@ -44,12 +60,18 @@ function Home() {
   const getWeatherIcon = () => {
     if (!weather) return rainIcon;
     switch (weather.main) {
-      case "Clouds": return cloudsIcon;
-      case "Clear": return clearIcon;
-      case "Drizzle": return drizzleIcon;
-      case "Rain": return rainIcon;
-      case "Mist": return mistIcon;
-      default: return rainIcon;
+      case "Clouds":
+        return cloudsIcon;
+      case "Clear":
+        return clearIcon;
+      case "Drizzle":
+        return drizzleIcon;
+      case "Rain":
+        return rainIcon;
+      case "Mist":
+        return mistIcon;
+      default:
+        return rainIcon;
     }
   };
 
@@ -76,7 +98,7 @@ function Home() {
       {weather && (
         <div className="weather">
           <img src={getWeatherIcon()} className="weather-icon" alt="weather" />
-          <h1 className="temp">{weather.temp}°c</h1>
+          <h1 className="temp">{weather.temp}°C</h1>
           <h2 className="city">{weather.name}</h2>
 
           <div className="details">
